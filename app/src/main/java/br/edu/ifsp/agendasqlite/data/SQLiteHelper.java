@@ -17,8 +17,9 @@ class SQLiteHelper extends SQLiteOpenHelper {
     static final String KEY_FONE = "fone";
     static final String KEY_EMAIL = "email";
     static final String KEY_FAVORITO = "favorito";
+    static final String KEY_FONE_2 = "fone2";
 
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     private static final String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + " ("
                                                + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -44,9 +45,7 @@ class SQLiteHelper extends SQLiteOpenHelper {
                 recuperaDados(db);
                 break;
             case 3:
-                Log.w(db.getClass().getName(),
-                        "Atualizando database da versão " + oldVersion + " para "
-                                + newVersion + ", etapa 3");
+                db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD COLUMN " + KEY_FONE_2 + " TEXT;");
                 break;
             case 4:
                 Log.w(db.getClass().getName(),
