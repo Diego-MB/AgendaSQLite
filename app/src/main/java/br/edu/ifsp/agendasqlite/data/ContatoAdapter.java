@@ -157,7 +157,6 @@ public class ContatoAdapter
                     contactListFiltered.set(contactListFiltered.indexOf(contato), contato);
 
                     if(!favorito.isActivated()){
-
                         Toast.makeText(itemView.getContext(), "Favoritado!", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(itemView.getContext(), "Desfavoritado!", Toast.LENGTH_SHORT).show();
