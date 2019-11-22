@@ -6,8 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -93,6 +95,7 @@ public class ContatoAdapter
     @Override
     public void onBindViewHolder(@NonNull ContatoViewHolder holder, int position) {
             holder.nome.setText(contactListFiltered.get(position).getNome());
+            holder.favorito.setActivated(contactListFiltered.get(position).getFavorito());
     }
 
     @Override
@@ -139,10 +142,37 @@ public class ContatoAdapter
             implements View.OnClickListener
     {
         final TextView nome;
+        final ImageButton favorito;
 
-        public ContatoViewHolder(@NonNull View itemView) {
+        public ContatoViewHolder(@NonNull final View itemView) {
             super(itemView);
             nome = (TextView) itemView.findViewById(R.id.nome);
+            favorito = (ImageButton) itemView.findViewById(R.id.favorito);
+
+            favorito.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Contato contato = contactListFiltered.get(getAdapterPosition());
+                    ContatoDAO dao = new ContatoDAO(itemView.getContext());
+
+                    contato.setFavorito(!favorito.isActivated());
+                    dao.favoritarContato(contato);
+                    contactListFiltered.set(contactListFiltered.indexOf(contato), contato);
+
+
+                    if(!favorito.isActivated()){
+
+                        Toast.makeText(itemView.getContext(), "Favoritado!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(itemView.getContext(), "Desfavoritado!", Toast.LENGTH_SHORT).show();
+                    }
+
+                    notifyItemChanged(contactListFiltered.indexOf(contato));
+
+                }
+            });
+
             itemView.setOnClickListener(this);
         }
 

@@ -70,7 +70,7 @@ class SQLiteHelper extends SQLiteOpenHelper {
                 + KEY_NOME + " TEXT, "
                 + KEY_FONE + " TEXT, "
                 + KEY_EMAIL + " TEXT,"
-                + KEY_FAVORITO + " INTEGER);";
+                + KEY_FAVORITO + " INTEGER DEFAULT 0);";
         db.execSQL(sqlite2);
 
         //Recupera as informações da tabela temp

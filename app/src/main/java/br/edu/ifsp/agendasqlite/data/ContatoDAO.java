@@ -43,6 +43,7 @@ public class ContatoDAO {
            c.setNome(cursor.getString(1));
            c.setFone(cursor.getString(2));
            c.setEmail(cursor.getString(3));
+           c.setFavorito(cursor.getInt(4) == 1);
 
            contatos.add(c);
         }
@@ -92,6 +93,20 @@ public class ContatoDAO {
 
         database.delete(SQLiteHelper.TABLE_NAME,
                         SQLiteHelper.KEY_ID +"="+ c.getId(),null);
+
+        database.close();
+
+    }
+
+    public void favoritarContato (Contato c)
+    {
+        database = dbHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(SQLiteHelper.KEY_FAVORITO, c.getFavorito());
+
+        database.update(SQLiteHelper.TABLE_NAME, values,
+                SQLiteHelper.KEY_ID +"="+ c.getId(), null);
 
         database.close();
 
