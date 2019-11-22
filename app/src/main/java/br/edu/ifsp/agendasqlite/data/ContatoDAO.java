@@ -45,6 +45,7 @@ public class ContatoDAO {
            c.setEmail(cursor.getString(3));
            c.setFavorito(cursor.getInt(4) == 1);
            c.setFone2(cursor.getString(5));
+           c.setAniversario(cursor.getString(6));
 
            contatos.add(c);
         }
@@ -64,9 +65,9 @@ public class ContatoDAO {
         ContentValues values = new ContentValues();
         values.put(SQLiteHelper.KEY_NOME, c.getNome());
         values.put(SQLiteHelper.KEY_FONE, c.getFone());
-        values.put(SQLiteHelper.KEY_EMAIL, c.getEmail());
         values.put(SQLiteHelper.KEY_FONE_2, c.getFone2());
-
+        values.put(SQLiteHelper.KEY_EMAIL, c.getEmail());
+        values.put(SQLiteHelper.KEY_ANIVERSARIO, c.getAniversario());
 
         long id = database.insert(SQLiteHelper.TABLE_NAME, null, values);
 
@@ -82,11 +83,25 @@ public class ContatoDAO {
         ContentValues values = new ContentValues();
         values.put(SQLiteHelper.KEY_NOME, c.getNome());
         values.put(SQLiteHelper.KEY_FONE, c.getFone());
-        values.put(SQLiteHelper.KEY_EMAIL, c.getEmail());
         values.put(SQLiteHelper.KEY_FONE_2, c.getFone2());
+        values.put(SQLiteHelper.KEY_EMAIL, c.getEmail());
+        values.put(SQLiteHelper.KEY_ANIVERSARIO, c.getAniversario());
 
         database.update(SQLiteHelper.TABLE_NAME, values,
                      SQLiteHelper.KEY_ID +"=" +c.getId(),null);
+
+        database.close();
+    }
+
+    public void favoritarContato(Contato c) {
+        database = dbHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        // Inverte o valor favorito atual
+        values.put(SQLiteHelper.KEY_FAVORITO, c.getFavorito());
+
+        database.update(SQLiteHelper.TABLE_NAME, values,
+                SQLiteHelper.KEY_ID +"=" +c.getId(),null);
 
         database.close();
     }
@@ -97,20 +112,6 @@ public class ContatoDAO {
 
         database.delete(SQLiteHelper.TABLE_NAME,
                         SQLiteHelper.KEY_ID +"="+ c.getId(),null);
-
-        database.close();
-
-    }
-
-    public void favoritarContato (Contato c)
-    {
-        database = dbHelper.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(SQLiteHelper.KEY_FAVORITO, c.getFavorito());
-
-        database.update(SQLiteHelper.TABLE_NAME, values,
-                SQLiteHelper.KEY_ID +"="+ c.getId(), null);
 
         database.close();
 

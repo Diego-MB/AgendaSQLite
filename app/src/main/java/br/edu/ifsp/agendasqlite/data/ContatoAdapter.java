@@ -1,13 +1,11 @@
 package br.edu.ifsp.agendasqlite.data;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -88,7 +86,6 @@ public class ContatoAdapter
     public ContatoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                    .inflate(R.layout.contato_celula,parent,false);
-
         return new ContatoViewHolder(view);
     }
 
@@ -114,7 +111,7 @@ public class ContatoAdapter
                 } else {
                     List<Contato> filteredList = new ArrayList<>();
                     for (Contato row : contatos) {
-                        if (row.getNome().toLowerCase().contains(charString.toLowerCase()) ) {
+                        if (row.getNome().toLowerCase().contains(charString.toLowerCase()) || row.getEmail().toLowerCase().contains(charString.toLowerCase()) ) {
                             filteredList.add(row);
                         }
                     }
@@ -152,14 +149,12 @@ public class ContatoAdapter
             favorito.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
                     Contato contato = contactListFiltered.get(getAdapterPosition());
                     ContatoDAO dao = new ContatoDAO(itemView.getContext());
 
                     contato.setFavorito(!favorito.isActivated());
                     dao.favoritarContato(contato);
                     contactListFiltered.set(contactListFiltered.indexOf(contato), contato);
-
 
                     if(!favorito.isActivated()){
 
@@ -169,10 +164,8 @@ public class ContatoAdapter
                     }
 
                     notifyItemChanged(contactListFiltered.indexOf(contato));
-
                 }
             });
-
             itemView.setOnClickListener(this);
         }
 
@@ -181,8 +174,6 @@ public class ContatoAdapter
               if (clickListener!=null)
                   clickListener.onItemClick(getAdapterPosition());
         }
-
-
     }
 
 
